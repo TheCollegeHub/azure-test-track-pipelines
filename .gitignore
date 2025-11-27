@@ -3,3 +3,19 @@ node_modules/
 src/DS_Store
 .vscode/
 dist/
+
+# Environment variables (contains secrets)
+.env
+
+# Build outputs
+*.js
+*.js.map
+!test-local.js
+
+# Extension package
+*.vsix
+
+# Test results (can be regenerated)
+test-results/
+
+.taskkey

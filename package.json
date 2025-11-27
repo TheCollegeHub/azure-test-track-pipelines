@@ -6,12 +6,20 @@
   "keywords": [],
   "author": "Nathan Araujo",
   "license": "ISC",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "test:local": "npm run build && node test-local.js",
+    "test:junit": "set INPUT_REPORTTYPE=junit && npm run test:local",
+    "test:playwright": "set INPUT_REPORTTYPE=playwright-json && set INPUT_TESTRESULTSFILEPATH=./test-results/results-playwright.json && npm run test:local"
+  },
   "dependencies": {
     "@thecollege/azure-test-track": "^1.5.1",
     "azure-pipelines-task-lib": "^4.17.3"
   },
   "devDependencies": {
     "@types/node": "^22.12.0",
+    "dotenv": "^16.6.1",
     "typescript": "^5.7.3"
   }
 }
