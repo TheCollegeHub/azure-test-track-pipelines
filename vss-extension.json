@@ -4,6 +4,7 @@
     "name": "Azure Test Track Pipelines",
     "version": "1.0.0",
     "publisher": "araujosnathan",
+    "public": true,
     "targets": [
       {
         "id": "Microsoft.VisualStudio.Services"
@@ -11,8 +12,45 @@
     ],
     "description": "Reads test results from an XML file and updates an Azure DevOps Release Plan.",
     "categories": ["Azure Pipelines", "Azure Test Plans"],
+    "tags": [
+      "test",
+      "testing",
+      "test-results",
+      "test-plans",
+      "junit",
+      "playwright",
+      "cucumber",
+      "automation",
+      "qa",
+      "quality"
+    ],
+    "galleryFlags": [
+      "Public"
+    ],
     "icons": {
       "default": "images/extension-logo.png"
+    },
+    "content": {
+      "details": {
+        "path": "README.md"
+      }
+    },
+    "links": {
+      "getstarted": {
+        "uri": "https://github.com/TheCollegeHub/azure-test-track-pipelines/blob/main/docs/EXAMPLE_PLAYWRIGHT.md"
+      },
+      "learn": {
+        "uri": "https://github.com/TheCollegeHub/azure-test-track-pipelines/blob/main/docs/ARCHITECTURE.md"
+      },
+      "support": {
+        "uri": "https://github.com/TheCollegeHub/azure-test-track-pipelines/issues"
+      },
+      "repository": {
+        "uri": "https://github.com/TheCollegeHub/azure-test-track-pipelines"
+      },
+      "issues": {
+        "uri": "https://github.com/TheCollegeHub/azure-test-track-pipelines/issues"
+      }
     },
     "files": [
       {
