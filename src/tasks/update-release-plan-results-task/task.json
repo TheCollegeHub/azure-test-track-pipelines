@@ -1,0 +1,63 @@
+{
+    "id": "7dcaa7ec-8627-47f1-a39b-eb789c8b0a3b",
+    "name": "UpdateReleasePlanResultsTask",
+    "friendlyName": "Update Release Plan with Test Results",
+    "description": "Reads an XML test result file and updates a release plan in Azure DevOps",
+    "helpMarkDown": "Use this task to update your release plan with test results.",
+    "category": "Utility",
+    "author": "Nathan Araujo",
+    "version": {
+      "Major": 1,
+      "Minor": 0,
+      "Patch": 0
+    },
+    "instanceNameFormat": "Update release plan $(releasePlanName)",
+    "inputs": [
+      {
+        "name": "releasePlanName",
+        "type": "string",
+        "label": "Release Plan Name",
+        "defaultValue": "",
+        "required": true,
+        "helpMarkDown": "The name of the release plan to update."
+      },
+      {
+        "name": "testResultsFilePath",
+        "type": "string",
+        "label": "Test Results File",
+        "defaultValue": "./test-results/results.xml",
+        "required": true,
+        "helpMarkDown": "Path to the XML or JSON file containing the test results."
+      },
+      {
+        "name": "testRunName",
+        "type": "string",
+        "label": "Test Run Name",
+        "defaultValue": "",
+        "required": true,
+        "helpMarkDown": "The name of the Test Run to be created."
+      },
+      {
+        "name": "reportType",
+        "type": "string",
+        "label": "report Type",
+        "defaultValue": "junit",
+        "required": true,
+        "helpMarkDown": "report Type to extrat the test results. Supported types: junit, playwright-json, cucumber-json."
+      },
+       {
+        "name": "useTestInfo",
+        "type": "boolean",
+        "label": "Use Test Info",
+        "defaultValue": "true",
+        "required": false,
+        "helpMarkDown": "To use or not test.info() to get TestCaseIds from the test results."
+      }
+    ],
+    "execution": {
+      "Node": {
+        "target": "src/tasks/update-release-plan-results-task/index.js"
+      }
+    }
+  }
+  

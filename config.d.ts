@@ -1,0 +1,1 @@
+declare module '@thecollege/azure-test-track';
