@@ -1,6 +1,6 @@
 
 <p align="center">
-  <img src="https://github.com/TheCollegeHub/azure-test-track-pipelines/blob/main/images/extension-logo.png" width="400" style="height: auto; display: block; margin: 0 auto;">
+  <img src="https://raw.githubusercontent.com/TheCollegeHub/azure-test-track-pipelines/blob/main/images/extension-logo.png" width="400" style="height: auto; display: block; margin: 0 auto;">
 </p>
 
 # Azure Test Track Pipelines
