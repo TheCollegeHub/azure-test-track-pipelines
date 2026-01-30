@@ -1,64 +1,73 @@
 {
-    "id": "7dcaa7ec-8627-47f1-a39b-eb789c8b0a3b",
-    "name": "UpdateReleasePlanResultsTask",
-    "friendlyName": "Update Release Plan with Test Results",
-    "description": "Reads an XML test result file and updates a release plan in Azure DevOps",
-    "helpMarkDown": "Use this task to update your release plan with test results.",
-    "category": "Utility",
-    "author": "Nathan Araujo",
-    "version": {
-      "Major": 1,
-      "Minor": 0,
-      "Patch": 2
-    },
-    "instanceNameFormat": "Update release plan $(releasePlanName)",
-    "iconUrl": "extension-logo.png",
-    "inputs": [
-      {
-        "name": "releasePlanName",
-        "type": "string",
-        "label": "Release Plan Name",
+  "id": "7dcaa7ec-8627-47f1-a39b-eb789c8b0a3b",
+  "name": "UpdateReleasePlanResultsTask",
+  "friendlyName": "Update Release Plan with Test Results",
+  "description": "Reads an XML test result file and updates a release plan in Azure DevOps",
+  "helpMarkDown": "Use this task to update your release plan with test results.",
+  "category": "Utility",
+  "author": "Nathan Araujo",
+  "version": {
+    "Major": 1,
+    "Minor": 0,
+    "Patch": 3
+  },
+
+  "runsOn": [
+    "Agent"
+  ],
+
+  "minimumAgentVersion": "2.220.0",
+
+  "instanceNameFormat": "Update release plan $(releasePlanName)",
+
+  "inputs": [
+    {
+      "name": "releasePlanName",
+      "type": "string",
+      "label": "Release Plan Name",
         "defaultValue": "",
         "required": true,
         "helpMarkDown": "The name of the release plan to update."
-      },
-      {
-        "name": "testResultsFilePath",
-        "type": "string",
-        "label": "Test Results File",
-        "defaultValue": "./test-results/results.xml",
-        "required": true,
-        "helpMarkDown": "Path to the XML or JSON file containing the test results."
-      },
-      {
-        "name": "testRunName",
-        "type": "string",
-        "label": "Test Run Name",
+    },
+    {
+      "name": "testResultsFilePath",
+      "type": "string",
+      "label": "Test Results File",
+      "defaultValue": "./test-results/results.xml",
+      "required": true,
+      "helpMarkDown": "Path to the XML or JSON file containing the test results."
+    },
+    {
+      "name": "testRunName",
+      "type": "string",
+      "label": "Test Run Name",
         "defaultValue": "",
         "required": true,
         "helpMarkDown": "The name of the Test Run to be created."
-      },
-      {
-        "name": "reportType",
-        "type": "string",
-        "label": "report Type",
-        "defaultValue": "junit",
+    },
+    {
+      "name": "reportType",
+      "type": "string",
+      "label": "Report Type",
+      "defaultValue": "junit",
         "required": true,
         "helpMarkDown": "report Type to extrat the test results. Supported types: junit, playwright-json, cucumber-json."
-      },
-      {
-        "name": "useTestInfo",
-        "type": "boolean",
-        "label": "Use Test Info",
-        "defaultValue": "true",
-        "required": false,
-        "helpMarkDown": "To use or not test.info() to get TestCaseIds from the test results."
-      }
-    ],
-    "execution": {
-      "Node20": {
-        "target": "index.js"
-      }
+    },
+    {
+      "name": "useTestInfo",
+      "type": "boolean",
+      "label": "Use Test Info",
+      "defaultValue": "true",
+      "required": false,
+      "helpMarkDown": "To use or not test.info() to get TestCaseIds from the test results."
+    }
+  ],
+  "execution": {
+     "Node16": {
+      "target": "index.js"
+    },
+    "Node20": {
+      "target": "index.js"
     }
   }
-  
+}
