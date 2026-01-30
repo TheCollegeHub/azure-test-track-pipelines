@@ -1,7 +1,7 @@
 {
   "name": "azure-test-track-pipelines",
   "displayName": "Azure Test Track Pipelines",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "An Azure DevOps Tasks that updates a release plan with test results. This task helps teams integrate test results into their release workflow, ensuring better tracking and visibility of quality metrics.",
   "keywords": [],
   "author": "Nathan Araujo",
