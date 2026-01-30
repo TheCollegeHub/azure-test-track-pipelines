@@ -12,6 +12,7 @@
       "Patch": 0
     },
     "instanceNameFormat": "Update release plan $(releasePlanName)",
+    "iconUrl": "extension-logo.png",
     "inputs": [
       {
         "name": "releasePlanName",
@@ -45,7 +46,7 @@
         "required": true,
         "helpMarkDown": "report Type to extrat the test results. Supported types: junit, playwright-json, cucumber-json."
       },
-       {
+      {
         "name": "useTestInfo",
         "type": "boolean",
         "label": "Use Test Info",
@@ -55,7 +56,7 @@
       }
     ],
     "execution": {
-      "Node": {
+      "Node20": {
         "target": "src/tasks/update-release-plan-results-task/index.js"
       }
     }
