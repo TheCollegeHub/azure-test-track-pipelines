@@ -57,7 +57,7 @@
     ],
     "execution": {
       "Node20": {
-        "target": "src/tasks/update-release-plan-results-task/index.js"
+        "target": "index.js"
       }
     }
   }
