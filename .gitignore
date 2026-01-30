@@ -8,7 +8,6 @@ dist/
 .env
 
 # Build outputs
-*.js
 *.js.map
 !test-local.js
 
