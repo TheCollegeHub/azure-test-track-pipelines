@@ -9,7 +9,7 @@
   "version": {
     "Major": 1,
     "Minor": 0,
-    "Patch": 3
+    "Patch": 4
   },
 
   "runsOn": [
@@ -63,9 +63,6 @@
     }
   ],
   "execution": {
-     "Node16": {
-      "target": "index.js"
-    },
     "Node20": {
       "target": "index.js"
     }
