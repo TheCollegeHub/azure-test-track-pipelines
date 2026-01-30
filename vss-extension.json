@@ -10,7 +10,7 @@
         "id": "Microsoft.VisualStudio.Services"
       }
     ],
-    "description": "Reads test results from an XML file and updates an Azure DevOps Release Plan.",
+    "description": "Reads test results from an XML/JSON file and updates an Azure DevOps Release Plan.",
     "categories": ["Azure Pipelines", "Azure Test Plans"],
     "tags": [
       "test",
