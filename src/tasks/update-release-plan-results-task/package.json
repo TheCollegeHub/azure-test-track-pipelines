@@ -1,0 +1,10 @@
+{
+  "name": "update-release-plan-results-task",
+  "version": "1.0.4",
+  "description": "Azure DevOps task to update release plan with test results",
+  "main": "index.js",
+  "dependencies": {
+    "@thecollege/azure-test-track": "^1.5.1",
+    "azure-pipelines-task-lib": "^4.17.3"
+  }
+}
