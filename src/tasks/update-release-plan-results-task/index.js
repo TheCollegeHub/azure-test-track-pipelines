@@ -41,7 +41,8 @@ async function run() {
         const testResultsFile = tl.getInput('testResultsFilePath', true);
         const testRunName = tl.getInput('testRunName', true);
         const reportType = tl.getInput('reportType', true);
-        const useTestInfo = tl.getInput('useTestInfo', true);
+        const useTestInfoInput = tl.getInput('useTestInfo', true);
+        const useTestInfo = useTestInfoInput === 'true' || useTestInfoInput === 'True';
         tl.debug(`Processing test results from: ${testResultsFile} to apply in ${releasePlanName} named ${testRunName}`);
         const testSettings = {
             resultFilePath: testResultsFile,
@@ -50,6 +51,7 @@ async function run() {
             reportType: reportType,
             useTestInfo: useTestInfo
         };
+        console.log('Test Settings:', testSettings);
         await (0, azure_test_track_1.createTestRunByExecution)(testSettings);
         tl.setResult(tl.TaskResult.Succeeded, `Test results updated successfully. ${testRunName} create in Test Runs.`);
     }

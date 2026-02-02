@@ -7,7 +7,8 @@ async function run() {
         const testResultsFile: string = tl.getInput('testResultsFilePath', true)!;
         const testRunName: string = tl.getInput('testRunName', true)!;
         const reportType: string = tl.getInput('reportType', true)!;
-        const useTestInfo: string = tl.getInput('useTestInfo', true)!;
+        const useTestInfoInput: string = tl.getInput('useTestInfo', true)!;
+        const useTestInfo: boolean = useTestInfoInput === 'true' || useTestInfoInput === 'True';
         
         tl.debug(`Processing test results from: ${testResultsFile} to apply in ${releasePlanName} named ${testRunName}`);
 
@@ -18,7 +19,7 @@ async function run() {
             reportType: reportType,
             useTestInfo: useTestInfo
         }
-
+        console.log('Test Settings:', testSettings);
         await createTestRunByExecution(testSettings);
        
         tl.setResult(tl.TaskResult.Succeeded, `Test results updated successfully. ${testRunName} create in Test Runs.`);
