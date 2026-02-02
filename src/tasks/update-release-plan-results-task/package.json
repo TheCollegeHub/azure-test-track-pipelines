@@ -1,6 +1,6 @@
 {
   "name": "update-release-plan-results-task",
-  "version": "9",
+  "version": "1.1.1",
   "description": "Azure DevOps task to update release plan with test results",
   "main": "index.js",
   "dependencies": {
