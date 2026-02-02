@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "azure-test-track-pipelines",
     "name": "Azure Test Track Pipelines",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "publisher": "araujosnathan",
     "public": true,
     "targets": [
@@ -65,7 +65,7 @@
         "type": "ms.vss-distributed-task.task",
         "targets": ["ms.vss-distributed-task.tasks"],
         "properties": {
-          "name": "src/tasks/update-release-plan-results-task"
+          "name": "update-release-plan-results-task"
         }
       }
     ]
