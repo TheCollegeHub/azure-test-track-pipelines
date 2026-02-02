@@ -54,7 +54,9 @@
     },
     "files": [
       {
-        "path": "src/tasks/update-release-plan-results-task"
+        "path": "src/tasks/update-release-plan-results-task",
+        "addressable": true,
+        "packagePath": "/"
       }
     ],
     "contributions": [

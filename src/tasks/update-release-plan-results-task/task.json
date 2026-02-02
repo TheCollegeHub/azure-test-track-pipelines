@@ -12,6 +12,8 @@
     "Patch": 4
   },
 
+  "icon": "../../images/extension-logo.png",
+
   "runsOn": [
     "Agent"
   ],
@@ -63,6 +65,9 @@
     }
   ],
   "execution": {
+    "PowerShell3": {
+      "target": "index.js"
+    },
     "Node20": {
       "target": "index.js"
     }
