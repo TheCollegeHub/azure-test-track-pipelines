@@ -3,10 +3,12 @@
     "target": "ES2020",
     "module": "CommonJS",
     "moduleResolution": "Node",
-    "rootDir": "src",
-    "outDir": "dist",
+    "rootDir": "src/tasks/update-release-plan-results-task",
+    "outDir": "src/tasks/update-release-plan-results-task",
     "esModuleInterop": true,
     "strict": false,
     "skipLibCheck": true
-  }
+  },
+  "include": ["src/tasks/update-release-plan-results-task/**/*.ts"],
+  "exclude": ["node_modules"]
 }
