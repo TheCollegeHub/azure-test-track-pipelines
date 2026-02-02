@@ -9,7 +9,7 @@
   "version": {
     "Major": 1,
     "Minor": 0,
-    "Patch": 8
+    "Patch": 9
   },
 
   "icon": "../../images/extension-logo.png",
@@ -65,9 +65,6 @@
     }
   ],
   "execution": {
-    "PowerShell3": {
-      "target": "index.js"
-    },
     "Node20": {
       "target": "index.js"
     }
