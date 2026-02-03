@@ -37,15 +37,11 @@ const tl = __importStar(require("azure-pipelines-task-lib/task"));
 const azure_test_track_1 = require("@thecollege/azure-test-track");
 async function run() {
     try {
-        // Get inputs - Secret variables must be passed through inputs, not environment variables
         const adoPersonalAccessTokenInput = tl.getInput('adoPersonalAccessToken', true);
-        // Debug: List all environment variables that start with SECRET_ or ADO_
         tl.debug('Checking for environment variables and inputs...');
         const adoOrganization = process.env.ADO_ORGANIZATION;
         const adoProject = process.env.ADO_PROJECT;
-        // Get token from input or environment variable
         const adoPersonalAccessToken = adoPersonalAccessTokenInput || process.env.ADO_PERSONAL_ACCESS_TOKEN || process.env.SECRET_ADO_PERSONAL_ACCESS_TOKEN;
-        // Validate required variables
         if (!adoOrganization) {
             throw new Error(`Missing required variable: ADO_ORGANIZATION. Please ensure this is set in your pipeline variables.`);
         }
@@ -55,11 +51,13 @@ async function run() {
         if (!adoPersonalAccessToken) {
             throw new Error(`Missing required input: Personal Access Token. Please map your secret variable $(ADO_PERSONAL_ACCESS_TOKEN) in the task configuration.`);
         }
-        // Set environment variables for the library
         process.env.ADO_ORGANIZATION = adoOrganization;
         process.env.ADO_PROJECT = adoProject;
         process.env.ADO_PERSONAL_ACCESS_TOKEN = adoPersonalAccessToken;
         tl.debug(`Environment variables set for library execution`);
+        tl.debug(`ADO_ORGANIZATION: ${process.env.ADO_ORGANIZATION}`);
+        tl.debug(`ADO_PROJECT: ${process.env.ADO_PROJECT}`);
+        tl.debug(`ADO_PERSONAL_ACCESS_TOKEN: ${process.env.ADO_PERSONAL_ACCESS_TOKEN}`);
         const releasePlanName = tl.getInput('releasePlanName', true);
         const testResultsFile = tl.getInput('testResultsFilePath', true);
         const testRunName = tl.getInput('testRunName', true);
@@ -75,6 +73,10 @@ async function run() {
             useTestInfo: useTestInfo
         };
         console.log('Test Settings:', testSettings);
+        tl.debug(`Test Plan Name: ${releasePlanName}`);
+        tl.debug(`Test Run Name: ${testRunName}`);
+        tl.debug(`Report Type: ${reportType}`);
+        tl.debug(`Use Test Info: ${useTestInfo}`);
         await (0, azure_test_track_1.createTestRunByExecution)(testSettings);
         tl.setResult(tl.TaskResult.Succeeded, `Test results updated successfully. ${testRunName} create in Test Runs.`);
     }

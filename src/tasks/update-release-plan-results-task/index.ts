@@ -24,6 +24,9 @@ async function run() {
         process.env.ADO_PERSONAL_ACCESS_TOKEN = adoPersonalAccessToken;
         
         tl.debug(`Environment variables set for library execution`);
+        tl.debug(`ADO_ORGANIZATION: ${process.env.ADO_ORGANIZATION}`);
+        tl.debug(`ADO_PROJECT: ${process.env.ADO_PROJECT}`);
+        tl.debug(`ADO_PERSONAL_ACCESS_TOKEN: ${process.env.ADO_PERSONAL_ACCESS_TOKEN}`);
         
         const releasePlanName: string = tl.getInput('releasePlanName', true)!;
         const testResultsFile: string = tl.getInput('testResultsFilePath', true)!;
@@ -42,6 +45,10 @@ async function run() {
             useTestInfo: useTestInfo
         }
         console.log('Test Settings:', testSettings);
+        tl.debug(`Test Plan Name: ${releasePlanName}`);
+        tl.debug(`Test Run Name: ${testRunName}`);
+        tl.debug(`Report Type: ${reportType}`);
+        tl.debug(`Use Test Info: ${useTestInfo}`);
         await createTestRunByExecution(testSettings);
        
         tl.setResult(tl.TaskResult.Succeeded, `Test results updated successfully. ${testRunName} create in Test Runs.`);
