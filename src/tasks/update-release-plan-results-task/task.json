@@ -9,7 +9,7 @@
   "version": {
     "Major": 1,
     "Minor": 2,
-    "Patch": 4
+    "Patch": 5
   },
 
   "icon": "../../images/extension-logo.png",
@@ -62,6 +62,14 @@
       "defaultValue": "true",
       "required": false,
       "helpMarkDown": "To use or not test.info() to get TestCaseIds from the test results."
+    },
+    {
+      "name": "adoPersonalAccessToken",
+      "type": "string",
+      "label": "Personal Access Token",
+      "defaultValue": "$(ADO_PERSONAL_ACCESS_TOKEN)",
+      "required": true,
+      "helpMarkDown": "Azure DevOps Personal Access Token. This is automatically mapped from your pipeline secret variable."
     }
   ],
   "execution": {
