@@ -3,6 +3,22 @@ import { createTestRunByExecution } from "@thecollege/azure-test-track";
 
 async function run() {
     try {
+        const requiredEnvVars = ['ADO_ORGANIZATION', 'ADO_PROJECT', 'ADO_PERSONAL_ACCESS_TOKEN'];
+        const missingEnvVars: string[] = [];
+        
+        for (const envVar of requiredEnvVars) {
+            if (!process.env[envVar]) {
+                missingEnvVars.push(envVar);
+            }
+        }
+        
+        if (missingEnvVars.length > 0) {
+            throw new Error(`Missing required environment variables: ${missingEnvVars.join(', ')}. Please ensure these are set in your pipeline variables.`);
+        }
+        
+        tl.debug(`Environment variables validated: ADO_ORGANIZATION=${process.env.ADO_ORGANIZATION}`);
+        tl.debug(`Environment variables validated: ADO_PROJECT=${process.env.ADO_PROJECT}`);
+        
         const releasePlanName: string = tl.getInput('releasePlanName', true)!;
         const testResultsFile: string = tl.getInput('testResultsFilePath', true)!;
         const testRunName: string = tl.getInput('testRunName', true)!;
