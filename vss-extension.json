@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "azure-test-track-pipelines",
     "name": "Azure Test Track Pipelines",
-    "version": "1.2.8",
+    "version": "1.2.9",
     "publisher": "araujosnathan",
     "public": true,
     "targets": [

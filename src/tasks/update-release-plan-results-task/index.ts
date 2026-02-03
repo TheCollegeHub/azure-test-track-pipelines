@@ -1,4 +1,5 @@
 import * as tl from 'azure-pipelines-task-lib/task';
+import { createTestRunByExecution } from "@thecollege/azure-test-track";
 
 const adoPersonalAccessTokenInput = tl.getInput('adoPersonalAccessToken', true);
 tl.debug('Checking for environment variables and inputs...');
@@ -28,27 +29,35 @@ tl.debug(`ADO_PERSONAL_ACCESS_TOKEN: ${process.env.ADO_PERSONAL_ACCESS_TOKEN.sub
 
 async function run() {
     try {
-        // Dynamically import the library AFTER setting environment variables
-        const { createTestRunByExecution } = await import("@thecollege/azure-test-track");
+        // Get plan name from environment variable first, then fall back to task input
+        const planNameFromInput: string = tl.getInput('releasePlanName', true)!;
+        const planNameToUse = process.env.TEST_PLAN_NAME || planNameFromInput;
         
-        const releasePlanName: string = tl.getInput('releasePlanName', true)!;
+        if (!planNameToUse) {
+            throw new Error(`Missing required variable: TEST_PLAN_NAME or task input releasePlanName. Please ensure one is set.`);
+        }
+        
+        process.env.TEST_PLAN_NAME = planNameToUse;
+        
         const testResultsFile: string = tl.getInput('testResultsFilePath', true)!;
         const testRunName: string = tl.getInput('testRunName', true)!;
         const reportType: string = tl.getInput('reportType', true)!;
         const useTestInfoInput: string = tl.getInput('useTestInfo', true)!;
         const useTestInfo: boolean = useTestInfoInput === 'true' || useTestInfoInput === 'True';
         
-        tl.debug(`Processing test results from: ${testResultsFile} to apply in ${releasePlanName} named ${testRunName}`);
+        tl.debug(`Processing test results from: ${testResultsFile} to apply in ${planNameToUse} named ${testRunName}`);
 
         const testSettings = {
             resultFilePath: testResultsFile,
-            planName: releasePlanName,
+            planName: planNameToUse,
             testRunName: testRunName,
             reportType: reportType,
             useTestInfo: useTestInfo
         }
         console.log('Test Settings:', testSettings);
-        tl.debug(`Test Plan Name: ${releasePlanName}`);
+        tl.debug(`Plan Name from Environment: ${process.env.TEST_PLAN_NAME || 'not set'}`);
+        tl.debug(`Plan Name from Input: ${planNameFromInput}`);
+        tl.debug(`Final Plan Name Used: ${planNameToUse}`);
         tl.debug(`Test Run Name: ${testRunName}`);
         tl.debug(`Report Type: ${reportType}`);
         tl.debug(`Use Test Info: ${useTestInfo}`);
