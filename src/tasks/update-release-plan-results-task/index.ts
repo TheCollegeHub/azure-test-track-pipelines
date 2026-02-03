@@ -3,18 +3,22 @@ import { createTestRunByExecution } from "@thecollege/azure-test-track";
 
 async function run() {
     try {
-        const requiredEnvVars = ['ADO_ORGANIZATION', 'ADO_PROJECT', 'ADO_PERSONAL_ACCESS_TOKEN'];
-        const missingEnvVars: string[] = [];
+        // Get environment variables - note: Secret variables in Azure Pipelines are prefixed with SECRET_
+        const adoPersonalAccessToken = process.env.SECRET_ADO_PERSONAL_ACCESS_TOKEN || process.env.ADO_PERSONAL_ACCESS_TOKEN;
         
-        for (const envVar of requiredEnvVars) {
-            if (!process.env[envVar]) {
-                missingEnvVars.push(envVar);
-            }
+        // Validate required environment variables
+        if (!process.env.ADO_ORGANIZATION) {
+            throw new Error(`Missing required environment variable: ADO_ORGANIZATION. Please ensure this is set in your pipeline variables.`);
+        }
+        if (!process.env.ADO_PROJECT) {
+            throw new Error(`Missing required environment variable: ADO_PROJECT. Please ensure this is set in your pipeline variables.`);
+        }
+        if (!adoPersonalAccessToken) {
+            throw new Error(`Missing required environment variable: ADO_PERSONAL_ACCESS_TOKEN (Secret). Please ensure this is set in your pipeline variables.`);
         }
         
-        if (missingEnvVars.length > 0) {
-            throw new Error(`Missing required environment variables: ${missingEnvVars.join(', ')}. Please ensure these are set in your pipeline variables.`);
-        }
+        // Set environment variables for the library
+        process.env.ADO_PERSONAL_ACCESS_TOKEN = adoPersonalAccessToken;
         
         tl.debug(`Environment variables validated: ADO_ORGANIZATION=${process.env.ADO_ORGANIZATION}`);
         tl.debug(`Environment variables validated: ADO_PROJECT=${process.env.ADO_PROJECT}`);
