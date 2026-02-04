@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "azure-test-track-pipelines",
     "name": "Azure Test Track Pipelines",
-    "version": "1.3.7",
+    "version": "1.3.8",
     "publisher": "araujosnathan",
     "public": true,
     "targets": [
@@ -28,7 +28,7 @@
       "Public"
     ],
     "icons": {
-      "default": "images/extension-logo.png"
+      "default": "images/extension-icon.png"
     },
     "content": {
       "details": {

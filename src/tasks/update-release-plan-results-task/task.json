@@ -12,7 +12,7 @@
     "Patch": 7
   },
 
-  "icon": "images/extension-logo.png",
+  "icon": "images/extension-icon.png",
 
   "runsOn": [
     "Agent"
