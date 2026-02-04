@@ -34,7 +34,6 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 const tl = __importStar(require("azure-pipelines-task-lib/task"));
-const azure_test_track_1 = require("@thecollege/azure-test-track");
 // Capture console.error to ensure library errors appear in logs
 const originalConsoleError = console.error;
 console.error = (...args) => {
@@ -59,36 +58,31 @@ if (!adoPersonalAccessToken) {
 process.env.ADO_ORGANIZATION = adoOrganization;
 process.env.ADO_PROJECT = adoProject;
 process.env.ADO_PERSONAL_ACCESS_TOKEN = adoPersonalAccessToken;
+// IMPORTANT: Use dynamic require AFTER setting environment variables
+// This ensures the library picks up the correct environment variables
+const { createTestRunByExecution } = require('@thecollege/azure-test-track');
 tl.debug(`Environment variables set for library execution`);
 tl.debug(`ADO_ORGANIZATION: ${process.env.ADO_ORGANIZATION}`);
 tl.debug(`ADO_PROJECT: ${process.env.ADO_PROJECT}`);
 tl.debug(`ADO_PERSONAL_ACCESS_TOKEN: ${process.env.ADO_PERSONAL_ACCESS_TOKEN.substring(0, 3)}***${process.env.ADO_PERSONAL_ACCESS_TOKEN.substring(process.env.ADO_PERSONAL_ACCESS_TOKEN.length - 3)}`);
 async function run() {
     try {
-        // Get plan name from environment variable first, then fall back to task input
-        const planNameFromInput = tl.getInput('releasePlanName', true);
-        const planNameToUse = process.env.TEST_PLAN_NAME || planNameFromInput;
-        if (!planNameToUse) {
-            throw new Error(`Missing required variable: TEST_PLAN_NAME or task input releasePlanName. Please ensure one is set.`);
-        }
-        process.env.TEST_PLAN_NAME = planNameToUse;
+        // Get task inputs
+        const releasePlanName = tl.getInput('releasePlanName', true);
         const testResultsFile = tl.getInput('testResultsFilePath', true);
         const testRunName = tl.getInput('testRunName', true);
         const reportType = tl.getInput('reportType', true);
         const useTestInfoInput = tl.getInput('useTestInfo', true);
         const useTestInfo = useTestInfoInput === 'true' || useTestInfoInput === 'True';
-        tl.debug(`Processing test results from: ${testResultsFile} to apply in ${planNameToUse} named ${testRunName}`);
         const testSettings = {
             resultFilePath: testResultsFile,
-            planName: planNameToUse,
+            planName: releasePlanName,
             testRunName: testRunName,
             reportType: reportType,
             useTestInfo: useTestInfo
         };
         console.log('Test Settings:', testSettings);
-        tl.debug(`Plan Name from Environment: ${process.env.TEST_PLAN_NAME || 'not set'}`);
-        tl.debug(`Plan Name from Input: ${planNameFromInput}`);
-        tl.debug(`Final Plan Name Used: ${planNameToUse}`);
+        tl.debug(`Plan Name from Input: ${releasePlanName}`);
         tl.debug(`Test Run Name: ${testRunName}`);
         tl.debug(`Report Type: ${reportType}`);
         tl.debug(`Use Test Info: ${useTestInfo}`);
@@ -96,7 +90,7 @@ async function run() {
         try {
             tl.debug('Calling createTestRunByExecution...');
             console.log('📡 Calling library with:', JSON.stringify(testSettings, null, 2));
-            await (0, azure_test_track_1.createTestRunByExecution)(testSettings);
+            await createTestRunByExecution(testSettings);
             tl.setResult(tl.TaskResult.Succeeded, `Test results updated successfully. ${testRunName} created in Test Runs.`);
         }
         catch (libraryError) {
