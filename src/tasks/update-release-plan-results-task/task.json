@@ -9,10 +9,10 @@
   "version": {
     "Major": 1,
     "Minor": 3,
-    "Patch": 2
+    "Patch": 3
   },
 
-  "icon": "../../images/extension-logo.png",
+  "icon": "../../../images/extension-logo.png",
 
   "runsOn": [
     "Agent"
@@ -20,7 +20,7 @@
 
   "minimumAgentVersion": "2.220.0",
 
-  "instanceNameFormat": "Update release plan $(releasePlanName)",
+  "instanceNameFormat": "Update Release Plan $(releasePlanName)",
 
   "inputs": [
     {
@@ -35,7 +35,7 @@
       "name": "testResultsFilePath",
       "type": "string",
       "label": "Test Results File",
-      "defaultValue": "./test-results/results.xml",
+      "defaultValue": "$(build.SourcesDirectory)/test-results/results.xml",
       "required": true,
       "helpMarkDown": "Path to the XML or JSON file containing the test results."
     },
@@ -43,7 +43,7 @@
       "name": "testRunName",
       "type": "string",
       "label": "Test Run Name",
-        "defaultValue": "",
+        "defaultValue": "[UI|API][REGRESSION|SMOKE] Tests - Build $(Build.BuildNumber)",
         "required": true,
         "helpMarkDown": "The name of the Test Run to be created."
     },
