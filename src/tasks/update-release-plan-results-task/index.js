@@ -34,30 +34,32 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 const tl = __importStar(require("azure-pipelines-task-lib/task"));
+// Set environment variables BEFORE importing the library
+// so they are available when devops.js module loads
+const adoPersonalAccessTokenInput = tl.getInput('adoPersonalAccessToken', true);
+const adoOrganization = process.env.ADO_ORGANIZATION;
+const adoProject = process.env.ADO_PROJECT;
+const adoPersonalAccessToken = adoPersonalAccessTokenInput || process.env.ADO_PERSONAL_ACCESS_TOKEN || process.env.SECRET_ADO_PERSONAL_ACCESS_TOKEN;
+if (!adoOrganization) {
+    throw new Error(`Missing required variable: ADO_ORGANIZATION. Please ensure this is set in your pipeline variables.`);
+}
+if (!adoProject) {
+    throw new Error(`Missing required variable: ADO_PROJECT. Please ensure this is set in your pipeline variables.`);
+}
+if (!adoPersonalAccessToken) {
+    throw new Error(`Missing required input: Personal Access Token. Please map your secret variable $(ADO_PERSONAL_ACCESS_TOKEN) in the task configuration.`);
+}
+process.env.ADO_ORGANIZATION = adoOrganization;
+process.env.ADO_PROJECT = adoProject;
+process.env.ADO_PERSONAL_ACCESS_TOKEN = adoPersonalAccessToken;
+// NOW import the library with environment variables already set
 const azure_test_track_1 = require("@thecollege/azure-test-track");
 async function run() {
     try {
-        const adoPersonalAccessTokenInput = tl.getInput('adoPersonalAccessToken', true);
-        tl.debug('Checking for environment variables and inputs...');
-        const adoOrganization = process.env.ADO_ORGANIZATION;
-        const adoProject = process.env.ADO_PROJECT;
-        const adoPersonalAccessToken = adoPersonalAccessTokenInput || process.env.ADO_PERSONAL_ACCESS_TOKEN || process.env.SECRET_ADO_PERSONAL_ACCESS_TOKEN;
-        if (!adoOrganization) {
-            throw new Error(`Missing required variable: ADO_ORGANIZATION. Please ensure this is set in your pipeline variables.`);
-        }
-        if (!adoProject) {
-            throw new Error(`Missing required variable: ADO_PROJECT. Please ensure this is set in your pipeline variables.`);
-        }
-        if (!adoPersonalAccessToken) {
-            throw new Error(`Missing required input: Personal Access Token. Please map your secret variable $(ADO_PERSONAL_ACCESS_TOKEN) in the task configuration.`);
-        }
-        process.env.ADO_ORGANIZATION = adoOrganization;
-        process.env.ADO_PROJECT = adoProject;
-        process.env.ADO_PERSONAL_ACCESS_TOKEN = adoPersonalAccessToken;
-        tl.debug(`Environment variables set for library execution`);
+        tl.debug('=== TASK EXECUTION STARTED ===');
         tl.debug(`ADO_ORGANIZATION: ${process.env.ADO_ORGANIZATION}`);
         tl.debug(`ADO_PROJECT: ${process.env.ADO_PROJECT}`);
-        tl.debug(`ADO_PERSONAL_ACCESS_TOKEN: ${process.env.ADO_PERSONAL_ACCESS_TOKEN.substring(0, 3)}***${process.env.ADO_PERSONAL_ACCESS_TOKEN.substring(process.env.ADO_PERSONAL_ACCESS_TOKEN.length - 3)}`);
+        tl.debug(`ADO_PERSONAL_ACCESS_TOKEN: ${process.env.ADO_PERSONAL_ACCESS_TOKEN?.substring(0, 3)}***${process.env.ADO_PERSONAL_ACCESS_TOKEN?.substring((process.env.ADO_PERSONAL_ACCESS_TOKEN?.length || 0) - 3)}`);
         const releasePlanName = tl.getInput('releasePlanName', true);
         const testResultsFile = tl.getInput('testResultsFilePath', true);
         const testRunName = tl.getInput('testRunName', true);
