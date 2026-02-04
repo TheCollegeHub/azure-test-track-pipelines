@@ -35,6 +35,12 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 const tl = __importStar(require("azure-pipelines-task-lib/task"));
 const azure_test_track_1 = require("@thecollege/azure-test-track");
+// Capture console.error to ensure library errors appear in logs
+const originalConsoleError = console.error;
+console.error = (...args) => {
+    originalConsoleError(...args);
+    tl.debug(`[LIBRARY ERROR] ${args.join(' ')}`);
+};
 const adoPersonalAccessTokenInput = tl.getInput('adoPersonalAccessToken', true);
 tl.debug('Checking for environment variables and inputs...');
 let adoOrganization = process.env.ADO_ORGANIZATION;
@@ -89,13 +95,19 @@ async function run() {
         tl.debug(`Test Results File Path: ${testResultsFile}`);
         try {
             tl.debug('Calling createTestRunByExecution...');
+            console.log('📡 Calling library with:', JSON.stringify(testSettings, null, 2));
             await (0, azure_test_track_1.createTestRunByExecution)(testSettings);
-            tl.setResult(tl.TaskResult.Succeeded, `Test results updated successfully. ${testRunName} create in Test Runs.`);
+            tl.setResult(tl.TaskResult.Succeeded, `Test results updated successfully. ${testRunName} created in Test Runs.`);
         }
         catch (libraryError) {
+            console.error('❌ Library Error:', libraryError);
+            console.error('Error message:', libraryError?.message);
+            console.error('Error code:', libraryError?.code);
             tl.debug(`Full error object: ${JSON.stringify(libraryError)}`);
+            tl.debug(`Error message: ${libraryError?.message}`);
             if (libraryError.response) {
                 tl.debug(`API Error Status: ${libraryError.response.status}`);
+                tl.debug(`API Error StatusText: ${libraryError.response.statusText}`);
                 tl.debug(`API Error Data: ${JSON.stringify(libraryError.response.data)}`);
             }
             throw libraryError;

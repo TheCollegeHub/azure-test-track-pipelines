@@ -1,6 +1,13 @@
 import * as tl from 'azure-pipelines-task-lib/task';
 import { createTestRunByExecution } from "@thecollege/azure-test-track";
 
+// Capture console.error to ensure library errors appear in logs
+const originalConsoleError = console.error;
+console.error = (...args: any[]) => {
+    originalConsoleError(...args);
+    tl.debug(`[LIBRARY ERROR] ${args.join(' ')}`);
+};
+
 const adoPersonalAccessTokenInput = tl.getInput('adoPersonalAccessToken', true);
 tl.debug('Checking for environment variables and inputs...');
 let adoOrganization = process.env.ADO_ORGANIZATION;
@@ -65,12 +72,19 @@ async function run() {
         
         try {
             tl.debug('Calling createTestRunByExecution...');
+            console.log('📡 Calling library with:', JSON.stringify(testSettings, null, 2));
             await createTestRunByExecution(testSettings);
-            tl.setResult(tl.TaskResult.Succeeded, `Test results updated successfully. ${testRunName} create in Test Runs.`);
+            tl.setResult(tl.TaskResult.Succeeded, `Test results updated successfully. ${testRunName} created in Test Runs.`);
         } catch (libraryError: any) {
+            console.error('❌ Library Error:', libraryError);
+            console.error('Error message:', libraryError?.message);
+            console.error('Error code:', libraryError?.code);
+            
             tl.debug(`Full error object: ${JSON.stringify(libraryError)}`);
+            tl.debug(`Error message: ${libraryError?.message}`);
             if (libraryError.response) {
                 tl.debug(`API Error Status: ${libraryError.response.status}`);
+                tl.debug(`API Error StatusText: ${libraryError.response.statusText}`);
                 tl.debug(`API Error Data: ${JSON.stringify(libraryError.response.data)}`);
             }
             throw libraryError;
