@@ -9,10 +9,10 @@
   "version": {
     "Major": 1,
     "Minor": 3,
-    "Patch": 7
+    "Patch": 9
   },
 
-  "icon": "images/extension-icon.png",
+  "icon": "icon",
 
   "runsOn": [
     "Agent"
@@ -28,8 +28,24 @@
       "type": "string",
       "label": "Release Plan Name",
         "defaultValue": "",
+        "required": false,
+        "helpMarkDown": "The name of the release plan to update. Either releasePlanName or planId must be provided."
+    },
+    {
+      "name": "planId",
+      "type": "int",
+      "label": "Release Plan ID",
+        "defaultValue": "",
         "required": true,
-        "helpMarkDown": "The name of the release plan to update."
+        "helpMarkDown": "The ID of the release plan to update. This is faster than using planName. Either releasePlanName or planId must be provided."
+    },
+    {
+      "name": "configurationName",
+      "type": "string",
+      "label": "Configuration Name(s)",
+        "defaultValue": "",
+        "required": false,
+        "helpMarkDown": "Configuration name(s) for the test run. Can be a single value or multiple values separated by comma (e.g., 'Chrome' or 'Chrome,Firefox,Safari')."
     },
     {
       "name": "testResultsFilePath",

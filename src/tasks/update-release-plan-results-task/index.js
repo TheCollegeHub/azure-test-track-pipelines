@@ -52,7 +52,6 @@ if (!adoPersonalAccessToken) {
 process.env.ADO_ORGANIZATION = adoOrganization;
 process.env.ADO_PROJECT = adoProject;
 process.env.ADO_PERSONAL_ACCESS_TOKEN = adoPersonalAccessToken;
-// NOW import the library with environment variables already set
 const azure_test_track_1 = require("@thecollege/azure-test-track");
 async function run() {
     try {
@@ -60,20 +59,43 @@ async function run() {
         tl.debug(`ADO_ORGANIZATION: ${process.env.ADO_ORGANIZATION}`);
         tl.debug(`ADO_PROJECT: ${process.env.ADO_PROJECT}`);
         tl.debug(`ADO_PERSONAL_ACCESS_TOKEN: ${process.env.ADO_PERSONAL_ACCESS_TOKEN?.substring(0, 3)}***${process.env.ADO_PERSONAL_ACCESS_TOKEN?.substring((process.env.ADO_PERSONAL_ACCESS_TOKEN?.length || 0) - 3)}`);
-        const releasePlanName = tl.getInput('releasePlanName', true);
+        const releasePlanName = tl.getInput('releasePlanName', false) || undefined;
+        const planIdInput = tl.getInput('planId', false) || undefined;
+        const planId = planIdInput ? parseInt(planIdInput, 10) : undefined;
         const testResultsFile = tl.getInput('testResultsFilePath', true);
         const testRunName = tl.getInput('testRunName', true);
         const reportType = tl.getInput('reportType', true);
         const useTestInfoInput = tl.getInput('useTestInfo', true);
         const useTestInfo = useTestInfoInput === 'true' || useTestInfoInput === 'True';
-        tl.debug(`Processing test results from: ${testResultsFile} to apply in ${releasePlanName} named ${testRunName}`);
+        const configurationNameInput = tl.getInput('configurationName', false) || undefined;
+        if (!releasePlanName && !planId) {
+            throw new Error('Either releasePlanName or planId must be provided.');
+        }
+        if (planIdInput && isNaN(planId)) {
+            throw new Error(`Invalid planId: "${planIdInput}". Must be a valid number.`);
+        }
+        let configurationName = undefined;
+        if (configurationNameInput) {
+            const configArray = configurationNameInput.split(',').map(s => s.trim()).filter(s => s.length > 0);
+            configurationName = configArray.length === 1 ? configArray[0] : configArray;
+        }
+        const planIdentifier = planId || releasePlanName;
+        tl.debug(`Processing test results from: ${testResultsFile} to apply in ${planIdentifier} named ${testRunName}`);
         const testSettings = {
             resultFilePath: testResultsFile,
-            planName: releasePlanName,
             testRunName: testRunName,
             reportType: reportType,
             useTestInfo: useTestInfo
         };
+        if (planId) {
+            testSettings.planId = planId;
+        }
+        else if (releasePlanName) {
+            testSettings.planName = releasePlanName;
+        }
+        if (configurationName) {
+            testSettings.configurationName = configurationName;
+        }
         console.log('Test Settings:', testSettings);
         try {
             tl.debug('Calling createTestRunByExecution...');
@@ -81,7 +103,7 @@ async function run() {
             tl.setResult(tl.TaskResult.Succeeded, `Test results updated successfully. ${testRunName} create in Test Runs.`);
         }
         catch (libraryError) {
-            tl.debug(`Full error object: ${JSON.stringify(libraryError)}`);
+            tl.debug(`Full error: ${JSON.stringify(libraryError)}`);
             if (libraryError.response) {
                 tl.debug(`API Error Status: ${libraryError.response.status}`);
                 tl.debug(`API Error Data: ${JSON.stringify(libraryError.response.data)}`);
