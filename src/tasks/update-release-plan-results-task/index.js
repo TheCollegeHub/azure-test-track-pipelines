@@ -40,6 +40,7 @@ const adoPersonalAccessTokenInput = tl.getInput('adoPersonalAccessToken', true);
 const adoOrganization = process.env.ADO_ORGANIZATION;
 const adoProject = process.env.ADO_PROJECT;
 const adoPersonalAccessToken = adoPersonalAccessTokenInput || process.env.ADO_PERSONAL_ACCESS_TOKEN || process.env.SECRET_ADO_PERSONAL_ACCESS_TOKEN;
+const debug = process.env.DEBUG || 'false';
 if (!adoOrganization) {
     throw new Error(`Missing required variable: ADO_ORGANIZATION. Please ensure this is set in your pipeline variables.`);
 }
@@ -52,6 +53,7 @@ if (!adoPersonalAccessToken) {
 process.env.ADO_ORGANIZATION = adoOrganization;
 process.env.ADO_PROJECT = adoProject;
 process.env.ADO_PERSONAL_ACCESS_TOKEN = adoPersonalAccessToken;
+process.env.DEBUG = debug;
 const azure_test_track_1 = require("@thecollege/azure-test-track");
 async function run() {
     try {
@@ -59,6 +61,7 @@ async function run() {
         tl.debug(`ADO_ORGANIZATION: ${process.env.ADO_ORGANIZATION}`);
         tl.debug(`ADO_PROJECT: ${process.env.ADO_PROJECT}`);
         tl.debug(`ADO_PERSONAL_ACCESS_TOKEN: ${process.env.ADO_PERSONAL_ACCESS_TOKEN?.substring(0, 3)}***${process.env.ADO_PERSONAL_ACCESS_TOKEN?.substring((process.env.ADO_PERSONAL_ACCESS_TOKEN?.length || 0) - 3)}`);
+        tl.debug(`DEBUG mode: ${process.env.DEBUG}`);
         const releasePlanName = tl.getInput('releasePlanName', false) || undefined;
         const planIdInput = tl.getInput('planId', false) || undefined;
         const planId = planIdInput ? parseInt(planIdInput, 10) : undefined;
